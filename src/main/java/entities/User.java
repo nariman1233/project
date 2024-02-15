@@ -1,4 +1,5 @@
-package org.example;
+package entities;
+
 
 public class User{
     private int id;
@@ -6,12 +7,23 @@ public class User{
     private String surname;
     private boolean gender;
 
-    public User(int id, String name, String surname, boolean gender) {
-        this.id = id;
-        this.name = name;
-        this.surname = surname;
-        this.gender = gender;
+    public User(){
+
     }
+
+
+    public User(String name  , String surname , boolean gender){
+        setName(name);
+        setSurname(surname);
+        setGender(gender);
+    }
+    public User(int id, String name, String surname, boolean gender) {
+        this(name, surname, gender);
+        setId(id);
+
+    }
+
+
     public void setId(int id) {
         this.id = id;
     }
@@ -40,7 +52,7 @@ public class User{
         return surname;
     }
 
-    public boolean isGender() {
+    public boolean getGender() {
         return gender;
     }
 
