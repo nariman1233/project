@@ -20,12 +20,16 @@ public class UserRepository implements IUserRepository {
         Connection con = null;
         try{
             con = db.getConnection();
-            String sql = "INSERT INTO public.users(name , surname , gender) VALUES(?, ? ,? )";
+            String sql = "INSERT INTO public.users(name , surname , gender ,password) VALUES(?, ? ,? ,?)";
             PreparedStatement st = con.prepareStatement(sql);
 
             st.setString(1 , user.getName());
             st.setString(2 , user.getSurname());
             st.setBoolean(3, user.getGender());
+            st.setString(4, user.getPassword());
+
+
+
 
             st.execute();
             return true;
@@ -41,5 +45,38 @@ public class UserRepository implements IUserRepository {
             }
         }
         return false;
+    }
+
+    public  User getUser(int id , String password){
+        Connection con = null;
+        try{
+            con = db.getConnection();
+            String sql = "SELECT id,name,surname,balance FROM public.users WHERE id =? AND password =?";
+            PreparedStatement st = con.prepareStatement(sql);
+
+            st.setInt(1,id);
+            st.setString(2,password);
+
+            ResultSet rs = st.executeQuery();
+            if(rs.next()) {
+                User user = new User(rs.getInt("id"),
+                                rs.getString("name"),
+                                rs.getString("surname"),
+                                rs.getString("password"),
+                                rs.getInt("balance"));
+                return user;
+            }
+        }catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }catch (ClassNotFoundException e){
+            e.printStackTrace();
+        }finally {
+            try {
+                con.close();
+            }catch (SQLException throwables){
+                throwables.printStackTrace();
+            }
+        }
+        return null;
     }
 }

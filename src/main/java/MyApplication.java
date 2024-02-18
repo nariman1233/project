@@ -17,7 +17,8 @@ public class MyApplication {
           System.out.println();
           System.out.println("Welcome to Bank managment system");
           System.out.println("Select option:");
-          System.out.println("1.  create User");
+          System.out.println("1.  create account");
+          System.out.println("2.  authorization");
           System.out.println("0.  Exit");
           System.out.println();
           try {
@@ -25,6 +26,9 @@ public class MyApplication {
               int option = scanner.nextInt();
               if(option == 1){
                   createUserMenu();
+              }
+              else if(option == 2){
+                  getUserByIdAndPasswordMenu();
               }
               else{
                   break;
@@ -47,9 +51,21 @@ public class MyApplication {
         String surname = scanner.next();
         System.out.println("Please enter gender(male or female)");
         String gender = scanner.next();
+        System.out.println("Please create a password");
+        String password = scanner.next();
+        System.out.println("To create an account you should make your first deposit");
+        int balance = Integer.parseInt(scanner.next());
 
-        String response = controller.createUser(name,  surname , gender);
+        String response = controller.createUser(name,  surname , gender, password , balance);
         System.out.println(response);
 
+    }
+    public void  getUserByIdAndPasswordMenu(){
+        System.out.println("Please enter your id");
+        int id = scanner.nextInt();
+        System.out.println("enter your password");
+        String password = scanner.next();
+        String response = controller.getUser(id , password);
+        System.out.println(response);
     }
 }

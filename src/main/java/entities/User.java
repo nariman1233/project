@@ -6,22 +6,33 @@ public class User{
     private String name;
     private String surname;
     private boolean gender;
+    private String password;
 
-    public User(){
+    private  int balance;
+
+
+
+
+    public User(int id, String name, String surname, String password, int balance){
 
     }
 
 
-    public User(String name  , String surname , boolean gender){
+    public User(String name  , String surname , boolean gender, String password , int balance ){
         setName(name);
         setSurname(surname);
         setGender(gender);
+        setPassword(password);
+        setBalance(balance);
+
+
     }
-    public User(int id, String name, String surname, boolean gender) {
-        this(name, surname, gender);
+    public User(int id, String name, String surname, boolean gender , String password , int balance) {
+        this(name, surname, gender , password , balance);
         setId(id);
 
     }
+
 
 
     public void setId(int id) {
@@ -55,9 +66,16 @@ public class User{
     public boolean getGender() {
         return gender;
     }
+    public  void setPassword(String password){this.password = password;}
+    public String getPassword(){return password;}
+
+    public void setBalance(int balance) {
+        this.balance = balance;
+    }
+    public int getBalance(){return balance;}
 
     @Override
     public String toString() {
-        return id + ". " + name +" " + surname + "-" + (gender ? "male" : "female");
+        return id + ". " + name +" " + surname + "-" + (gender ? "male" : "female") + "your balance = " + balance;
     }
 }
