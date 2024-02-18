@@ -11,7 +11,7 @@ public class Main{
         IDB db = new PostgreDB();
         IUserRepository repo = new UserRepository(db);
         UserController controller = new UserController(repo);
-        MyApplication app = new MyApplication(controller);
+        MyApplication app = new MyApplication(controller , repo);
         app.start();
 
     }
