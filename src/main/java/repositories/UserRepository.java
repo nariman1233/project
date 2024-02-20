@@ -5,8 +5,6 @@ import entities.User;
 import repositories.interfaces.IUserRepository;
 
 import java.sql.*;
-import java.util.LinkedList;
-import java.util.List;
 
 public class UserRepository implements IUserRepository {
     private final IDB db;
@@ -16,24 +14,32 @@ public class UserRepository implements IUserRepository {
     }
 
     @Override
-    public boolean CreateUser(User user) {
+    public User CreateUser(User user) {
         Connection con = null;
         try{
             con = db.getConnection();
-            String sql = "INSERT INTO public.users(name , surname , gender ,password ,balance) VALUES(?, ? ,? ,?,?)";
+            String sql = "INSERT INTO public.users(id ,name , surname , gender ,password ,balance) VALUES(? ,?, ? ,? ,?,?)";
             PreparedStatement st = con.prepareStatement(sql);
+            int maxId = getMaxUserId();
+            int newId = maxId + 1;
 
-            st.setString(1 , user.getName());
-            st.setString(2 , user.getSurname());
-            st.setBoolean(3, user.getGender());
-            st.setString(4, user.getPassword());
-            st.setInt(5, user.getBalance());
+            st.setInt(1 , newId);
+            st.setString(2 , user.getName());
+            st.setString(3 , user.getSurname());
+            st.setBoolean(4, user.getGender());
+            st.setString(5, user.getPassword());
+            st.setInt(6, user.getBalance());
 
 
 
 
-            st.execute();
-            return true;
+
+            int affectedRows = st.executeUpdate();
+            if (affectedRows > 0) {
+                user.setId(newId);
+                return user;
+            }
+
         }catch (SQLException throwables) {
             throwables.printStackTrace();
         }catch (ClassNotFoundException e){
@@ -45,7 +51,7 @@ public class UserRepository implements IUserRepository {
                 throwables.printStackTrace();
             }
         }
-        return false;
+        return null;
     }
 
     public  User getUser(int id , String password){
@@ -146,6 +152,30 @@ public class UserRepository implements IUserRepository {
                 e.printStackTrace();
             }
         }
+    }
+    public int getMaxUserId() {
+        int maxId = 0;
+        Connection con = null;
+        try {
+            con = db.getConnection();
+            String sql = "SELECT MAX(id) AS max_id FROM public.users";
+            PreparedStatement st = con.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                maxId = rs.getInt("max_id");
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        }
+        return maxId;
     }
 
 

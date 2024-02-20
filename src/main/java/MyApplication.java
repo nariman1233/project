@@ -60,8 +60,12 @@ public class MyApplication {
         System.out.println("To create an account you should make your first deposit");
         int balance = scanner.nextInt();
 
-        String response = controller.createUser(name,  surname , gender, password , balance);
-        System.out.println(response);
+        User createdUser = controller.createUser(name, surname, gender, password, balance);
+        if (createdUser != null) {
+            System.out.println("User was created with ID: " + createdUser.getId());
+        } else {
+            System.out.println("User creation was failed!");
+        }
 
     }
     public void getUserByIdAndPasswordMenu(){
@@ -88,8 +92,8 @@ public class MyApplication {
                 while (true) {
                     System.out.println();
                     System.out.println("User Menu:");
-                    System.out.println("1. Deposit funds");
-                    System.out.println("2. Withdraw funds");
+                    System.out.println("1. replenish ");
+                    System.out.println("2. Withdraw ");
                     System.out.println("3. deposit");
                     System.out.println("0. Exit");
 
@@ -186,7 +190,6 @@ public class MyApplication {
 
         User user = repo.getUser2(userId);
         if (user != null) {
-            // Вычисляем итоговую сумму с учетом процентной ставки и срока депозита
             double finalAmount = calculateDepositWithInterest(amount, years);
             System.out.println("Initial amount: " + amount);
             System.out.println("Annual interest rate: 15%");
@@ -198,9 +201,9 @@ public class MyApplication {
     }
 
     private double calculateDepositWithInterest(double amount, int years) {
-        // Вычисляем итоговую сумму с учетом процентной ставки и срока депозита
         double annualInterestRate = 0.15; // 15%
         double interest = amount * annualInterestRate * years;
+        double res = amount + interest;
         return amount + interest;
     }
 }

@@ -12,13 +12,13 @@ public class UserController {
     public UserController(IUserRepository repo){
         this.repo = repo;
     }
-   public String createUser(String name , String surname , String gender , String password , int balance){
+   public User createUser( String name , String surname , String gender , String password , int balance){
         boolean male = (gender.toLowerCase().equals("male"));
         User user = new User(name , surname , male , password , balance);
 
-        boolean created = repo.CreateUser(user);
+       User createdUser = repo.CreateUser(user);
+       return createdUser;
 
-        return (created ? "User was created!" : "User creation was failed!");
    }
    public String getUser(int userId , String password){
         User user = repo.getUser(userId , password);
