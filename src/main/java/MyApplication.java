@@ -203,7 +203,6 @@ public class MyApplication {
     private double calculateDepositWithInterest(double amount, int years) {
         double annualInterestRate = 0.15; // 15%
         double interest = amount * annualInterestRate * years;
-        double res = amount + interest;
         return amount + interest;
     }
 }
